@@ -1,0 +1,100 @@
+﻿@model UserActionVm
+
+@{
+    ViewData["Title"] = "User Management";
+    Layout = "_Layout";
+}
+
+<h1>User Management</h1>
+
+<form asp-controller="Users" method="post">
+    <div class="toolbar">
+        <button id="blockButton" class="btn btn-danger" asp-action="BlockUsers">Block</button>
+        <button id="unblockButton" class="btn btn-success" asp-action="UnblockUsers">Unblock</button>
+        <button id="deleteButton" class="btn btn-danger" asp-action="DeleteUsers">Delete</button>
+    </div>
+
+    <table id="userTable" class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" id="selectAllCheckbox" />
+                </th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Last Login Time</th>
+                <th>Registration Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" asp-for="@user.Id" />
+                        <input type="checkbox" class="userCheckbox" asp-for="@user.Selected" />
+                    </td>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.LastLoginTime</td>
+                    <td>@user.RegistrationTime</td>
+                    <td>@(user.Blocked ? "Blocked" : "Active")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $('#selectAllCheckbox').change(function () {
+                var checkboxes = $('.userCheckbox');
+                var checked = $(this).is(':checked');
+                checkboxes.prop('checked', checked);
+                toggleToolbarButtons(checkboxes);
+            });
+
+            $('.userCheckbox').change(function () {
+                var checkboxes = $('.userCheckbox');
+                toggleToolbarButtons(checkboxes);
+            });
+
+            //$('#blockButton').click(function () {
+            //    var selectedUserIds = getSelectedUserIds();
+
+            //});
+
+
+            //$('#unblockButton').click(function () {
+            //    var selectedUserIds = getSelectedUserIds();
+
+            //});
+
+            //// Handle delete button click
+            //$('#deleteButton').click(function () {
+            //    var selectedUserIds = getSelectedUserIds();
+
+            //});
+
+            function toggleToolbarButtons(checkboxes) {
+                var selectedCount = checkboxes.filter(':checked').length;
+                $('#blockButton').prop('disabled', selectedCount === 0);
+                $('#unblockButton').prop('disabled', selectedCount === 0);
+                $('#deleteButton').prop('disabled', selectedCount === 0);
+            }
+
+            function getSelectedUserIds() {
+                var selectedUserIds = [];
+                $('.userCheckbox:checked').each(function () {
+                    selectedUserIds.push($(this).data('id'));
+                });
+                return selectedUserIds;
+            }
+        });
+    </script>
+}

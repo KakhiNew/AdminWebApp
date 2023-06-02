@@ -1,0 +1,17 @@
+﻿@model RegisterVm
+
+@{
+    ViewData["Title"] = "User Management";
+    Layout = "_Layout";
+}
+
+<h1>Log In</h1>
+
+<form asp-controller="Account" asp-action="Register" method="post">
+    <input type="text" asp-for="Name" placeholder="Name" />
+    <input type="email" asp-for="Email" placeholder="Email" />
+    <input type="password" asp-for="Password" placeholder="Password" />
+    <button type="submit">Register</button>
+</form>
+
+<a asp-action="Login">Login</a>
