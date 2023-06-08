@@ -10,6 +10,8 @@ namespace AdminWebApp.Repositories
         void UpdateUser(User user);
         void DeleteUser(int id);
         List<User> GetAllUsers();
+        void BlockUser(int userId);
+        void UnblockUser(int userId);
     }
 }
 

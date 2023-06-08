@@ -40,13 +40,52 @@ namespace AdminWebApp.Repositories
         }
 
         public void DeleteUser(int userId)
-        {
+          {
             var user = _dbContext.Users.Find(userId);
             if (user != null)
             {
                 _dbContext.Users.Remove(user);
                 _dbContext.SaveChanges();
             }
+          }
+        public void BlockUser(int userId)
+        {
+            var user = _dbContext.Users.Find(userId);
+            if (user != null)
+            {
+                user.Blocked = true;
+                _dbContext.SaveChanges();
+            }
         }
+        public void UnblockUser(int userId)
+        {
+            var user = _dbContext.Users.Find(userId);
+            if (user != null)
+            {
+                user.Blocked = false; 
+                _dbContext.SaveChanges();
+            }
+        }
+
+        // public void DeleteUser(int userId)
+        //  {
+        //     var user = _dbContext.Users.Find(userId);
+        //     if (user != null)
+        //     {
+        //         _dbContext.Users.Remove(user);
+        //      _dbContext.SaveChanges();
+        ///    }
+        //  }
+
+        //  public void DeleteUsers(List<int> userIds)
+        // {
+        //     var usersToDelete = _dbContext.Users.Where(u => userIds.Contains(u.Id));
+        //     _dbContext.Users.RemoveRange(usersToDelete);
+        //     _dbContext.SaveChanges();
+        // }
+
+
+
+
     }
 }

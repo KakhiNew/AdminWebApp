@@ -1,4 +1,4 @@
-﻿@model UserActionVm
+﻿@model UserListVm
 
 @{
     ViewData["Title"] = "User Management";
@@ -7,11 +7,11 @@
 
 <h1>User Management</h1>
 
-<form asp-controller="Users" method="post">
+<form asp-controller="Users" method="post" asp-antiforgery="false">
     <div class="toolbar">
-        <button id="blockButton" class="btn btn-danger" asp-action="BlockUsers">Block</button>
-        <button id="unblockButton" class="btn btn-success" asp-action="UnblockUsers">Unblock</button>
-        <button id="deleteButton" class="btn btn-danger" asp-action="DeleteUsers">Delete</button>
+        <button id="blockButton" disabled class="btn btn-danger" asp-action="BlockUsers">Block</button>
+        <button id="unblockButton" disabled class="btn btn-success" asp-action="UnblockUsers">Unblock</button>
+        <button id="deleteButton" disabled class="btn btn-danger" asp-action="DeleteUsers" onclick="return confirm('Do you want to delete selected entries?')">Delete</button>
     </div>
 
     <table id="userTable" class="table table-striped">
@@ -29,19 +29,19 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in Model.Users)
+            @for (int i = 0; i < Model.Users.Count; i++)
             {
                 <tr>
                     <td>
-                        <input type="hidden" asp-for="@user.Id" />
-                        <input type="checkbox" class="userCheckbox" asp-for="@user.Selected" />
+                        <input type="hidden" asp-for="@Model.Users[i].Id" />
+                        <input type="checkbox"  class="userCheckbox" asp-for="@Model.Users[i].Selected" />
                     </td>
-                    <td>@user.Id</td>
-                    <td>@user.Name</td>
-                    <td>@user.Email</td>
-                    <td>@user.LastLoginTime</td>
-                    <td>@user.RegistrationTime</td>
-                    <td>@(user.Blocked ? "Blocked" : "Active")</td>
+                    <td>@Model.Users[i].Id</td>
+                    <td>@Model.Users[i].Name</td>
+                    <td>@Model.Users[i].Email</td>
+                    <td>@Model.Users[i].LastLoginTime</td>
+                    <td>@Model.Users[i].RegistrationTime</td>
+                    <td>@(Model.Users[i].Blocked ? "Blocked" : "Active")</td>
                 </tr>
             }
         </tbody>
@@ -51,7 +51,6 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-
             $('#selectAllCheckbox').change(function () {
                 var checkboxes = $('.userCheckbox');
                 var checked = $(this).is(':checked');
@@ -63,23 +62,6 @@
                 var checkboxes = $('.userCheckbox');
                 toggleToolbarButtons(checkboxes);
             });
-
-            //$('#blockButton').click(function () {
-            //    var selectedUserIds = getSelectedUserIds();
-
-            //});
-
-
-            //$('#unblockButton').click(function () {
-            //    var selectedUserIds = getSelectedUserIds();
-
-            //});
-
-            //// Handle delete button click
-            //$('#deleteButton').click(function () {
-            //    var selectedUserIds = getSelectedUserIds();
-
-            //});
 
             function toggleToolbarButtons(checkboxes) {
                 var selectedCount = checkboxes.filter(':checked').length;

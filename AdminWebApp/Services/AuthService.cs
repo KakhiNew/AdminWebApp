@@ -30,7 +30,7 @@ namespace AdminWebApp.Services
         public bool IsUserValid(string email, string password)
         {
             var user = _userRepository.GetUserByEmail(email);
-            if (user != null && VerifyPasswordHash(password, user.PasswordHash))
+            if (user != null && !user.Blocked && VerifyPasswordHash(password, user.PasswordHash))
             {
                 user.LastLoginTime = DateTime.Now;
                 _userRepository.UpdateUser(user);
@@ -41,17 +41,27 @@ namespace AdminWebApp.Services
 
         public void BlockUser(int userId)
         {
-            throw new NotImplementedException();
+            var user = _userRepository.GetUserById(userId);
+            if (user != null)
+            {
+                user.Blocked = true;
+                _userRepository.UpdateUser(user);
+            }
         }
 
         public void UnblockUser(int userId)
         {
-            throw new NotImplementedException();
+            var user = _userRepository.GetUserById(userId);
+            if (user != null)
+            {
+                user.Blocked = false;
+                _userRepository.UpdateUser(user);
+            }
         }
 
         public void DeleteUser(int userId)
         {
-            throw new NotImplementedException();
+            _userRepository.DeleteUser(userId);
         }
 
         private string HashPassword(string password)

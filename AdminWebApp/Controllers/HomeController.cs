@@ -6,7 +6,7 @@ namespace AdminWebApp.Controllers
     {
         public IActionResult Index()
         {
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Users");
         }
     }
 }

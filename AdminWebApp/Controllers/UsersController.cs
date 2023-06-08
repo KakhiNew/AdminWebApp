@@ -1,6 +1,7 @@
 ﻿using AdminWebApp.Entities;
 using AdminWebApp.Repositories;
 using AdminWebApp.ViewModels;
+using AdminWebApp.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ namespace AdminWebApp.Controllers
                     RegistrationTime = u.RegistrationTime
                 })
                 .ToList();
-            var vm = new UserActionVm
+            var vm = new UserListVm
             {
                 Users = users
             };
@@ -69,21 +70,49 @@ namespace AdminWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult BlockUsers([FromForm] UserActionVm action)
+        public IActionResult BlockUsers(IEnumerable<UserActionRequestVm> users)
         {
-            throw new NotImplementedException();
+            foreach (var user in users.Where(u => u.Selected))
+            {
+                _userRepository.BlockUser(user.Id);
+            }
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult UnblockUsers(UserActionVm action)
+        public IActionResult UnblockUsers(IEnumerable<UserActionRequestVm> users)
         {
-            throw new NotImplementedException();
+            foreach (var user in users.Where(u => u.Selected))
+            {
+                _userRepository.UnblockUser(user.Id);
+            }
+           
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult DeleteUsers(UserActionVm action)
+        public IActionResult DeleteUsers(int id)
         {
-            throw new NotImplementedException();
+            //if (action.SelectedIds != null)
+            //{
+            //    foreach (int userId in action.SelectedIds)
+            //    {
+            //        _userRepository.DeleteUser(userId);
+            //    }
+            //}
+
+            //return RedirectToAction("Index");
+
+            _userRepository.DeleteUser(id);
+
+            return RedirectToAction("index");
+        }
+
+        public IActionResult Logout()
+        {
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

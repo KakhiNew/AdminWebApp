@@ -9,4 +9,5 @@ public class UserVm
     public DateTime RegistrationTime { get; set; }
     public bool Blocked { get; set; }
     public bool Selected { get; set; }
+   
 }

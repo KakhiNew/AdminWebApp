@@ -1,0 +1,39 @@
+﻿@model UserListVm
+
+<h2>Delete Users</h2>
+
+<form method="post" asp-action="DeleteUsers">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>User ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Users != null)
+            {
+                for (int i = 0; i < Model.Users.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="Users[@i].Selected" value="true" />
+                            <input type="hidden" name="Users[@i].Id" value="@Model.Users[i].Id" />
+                        </td>
+                        <td>@Model.Users[i].Id</td>
+                        <td>@Model.Users[i].Name</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">No users found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <input type="submit" value="Delete Users" />
+</form>

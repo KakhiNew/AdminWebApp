@@ -1,0 +1,64 @@
+﻿@*@model UserActionVm
+
+@{
+    ViewData["Title"] = "Block Users";
+}
+
+<h1>Block Users</h1>
+
+@using (Html.BeginForm("BlockUsers", "Users", FormMethod.Post))
+{
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Users.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" asp-for="@Model.Users[i].Selected" />
+                    </td>
+                    <td>@Model.Users[i].Id</td>
+                    <td>@Model.Users[i].Name</td>
+                    <td>@Model.Users[i].Email</td>
+                    <td>
+                        @if (Model.Users[i].Blocked)
+                        {
+                            <form asp-action="UnblockUser" method="post">
+                                <input type="hidden" asp-for="@Model.Users[i].Id" />
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-lock-open"></i> Unblock
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="BlockUser" method="post">
+                                <input type="hidden" asp-for="@Model.Users[i].Id" />
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-lock"></i> Block
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-danger" formaction="/Users/DeleteUser">
+        <i class="fas fa-trash"></i> Delete
+    </button>
+
+    <button type="submit" class="btn btn-primary" formaction="/Users/Logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+}
+*@

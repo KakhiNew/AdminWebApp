@@ -27,6 +27,11 @@ namespace AdminWebApp.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return Redirect("/");
+            }
+
             return View();
         }
 
@@ -45,6 +50,11 @@ namespace AdminWebApp.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return Redirect("/");
+            }
+
             return View();
         }
 
@@ -70,36 +80,14 @@ namespace AdminWebApp.Controllers
             var userIdentity = new ClaimsIdentity(claims, "login");
             ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                new AuthenticationProperties()
+                {
+                    IsPersistent = true
+                });
 
-            return RedirectToAction("Index", "Users");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
-        }
-
-        [HttpPost]
-        public IActionResult BlockUser(int userId)
-        {
-            _authService.BlockUser(userId);
-            return RedirectToAction("Index", "Users");
-        }
-
-        [HttpPost]
-        public IActionResult UnblockUser(int userId)
-        {
-            _authService.UnblockUser(userId);
-            return RedirectToAction("Index", "Users");
-        }
-
-        [HttpPost]
-        public IActionResult DeleteUser(int userId)
-        {
-            _authService.DeleteUser(userId);
             return RedirectToAction("Index", "Users");
         }
     }

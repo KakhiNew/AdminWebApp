@@ -1,0 +1,32 @@
+﻿@model UserListVm
+
+<h2>Unblock Users</h2>
+
+@using (Html.BeginForm("UnblockUsers", "Users", FormMethod.Post))
+{
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>User ID</th>
+                <th>Name</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Users.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" asp-for="@Model.Users[i].Selected" />
+                    </td>
+                    <td>@Model.Users[i].Id</td>
+                    <td>@Model.Users[i].Name</td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <input type="submit" value="Unblock Users" />
+}

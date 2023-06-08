@@ -2,7 +2,7 @@
 
 namespace AdminWebApp.ViewModels;
 
-public class UserActionVm
+public class UserListVm
 {
     public List<UserVm> Users { get; set; }
 }
