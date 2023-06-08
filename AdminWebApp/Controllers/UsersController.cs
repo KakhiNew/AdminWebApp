@@ -2,6 +2,7 @@
 using AdminWebApp.Repositories;
 using AdminWebApp.ViewModels;
 using AdminWebApp.ViewModels.Users;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -109,9 +110,9 @@ namespace AdminWebApp.Controllers
             return RedirectToAction("index");
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-
+            await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }
