@@ -23,11 +23,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-app.UseDeveloperExceptionPage();
-
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    //app.UseExceptionHandler("/Home/Error");
+    app.UseDeveloperExceptionPage();
+}
+else {
+    app.UseHttpsRedirection();
     app.UseHsts();
 }
 
