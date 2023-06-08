@@ -43,6 +43,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-await app.Services.GetRequiredService<AppDbContext>().Database.MigrateAsync();
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    await scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.MigrateAsync();
+}
 
 app.Run();
