@@ -93,21 +93,16 @@ namespace AdminWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteUsers(int id)
+        public IActionResult DeleteUsers(IEnumerable<UserActionRequestVm> users)
         {
-            //if (action.SelectedIds != null)
-            //{
-            //    foreach (int userId in action.SelectedIds)
-            //    {
-            //        _userRepository.DeleteUser(userId);
-            //    }
-            //}
+            foreach (var user in users.Where(u => u.Selected))
+            {
 
-            //return RedirectToAction("Index");
+                _userRepository.DeleteUser(user.Id);
+            }
 
-            _userRepository.DeleteUser(id);
+            return RedirectToAction("Index");
 
-            return RedirectToAction("index");
         }
 
         public async Task<IActionResult> Logout()
